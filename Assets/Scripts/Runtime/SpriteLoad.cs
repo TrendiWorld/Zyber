@@ -1,12 +1,12 @@
 // =============================================================
-// SpriteLoad.cs — load a PNG from Assets/Art/Characters/ into a Sprite at
-// runtime. Done in code (not via the importer) so the project needs zero
+// SpriteLoad.cs — load a PNG from StreamingAssets/Characters/ into a Sprite
+// at runtime. Done in code (not via the importer) so the project needs zero
 // manual import-setting wiring — consistent with the rest of the bootstrap.
 // Sprites are created at pixelsPerUnit = 1 (1 texel = 1 world px) and cached.
 //
-// NOTE: this reads from Application.dataPath, which resolves to the Assets
-// folder in the Editor and in development. For a shipped build you'd move
-// these into a Resources/ folder or an AssetBundle; fine for now.
+// Uses Application.streamingAssetsPath so it works identically in the Editor
+// AND in a standalone build (Unity copies StreamingAssets verbatim into the
+// player). Art lives in Assets/StreamingAssets/Characters/.
 // =============================================================
 using UnityEngine;
 using System.IO;
@@ -23,7 +23,7 @@ namespace LF2
             if (string.IsNullOrEmpty(fileName)) return null;
             if (_cache.TryGetValue(fileName, out var cached)) return cached;
 
-            string path = Path.Combine(Application.dataPath, "Art", "Characters", fileName);
+            string path = Path.Combine(Application.streamingAssetsPath, "Characters", fileName);
             if (!File.Exists(path))
             {
                 Debug.LogWarning($"[LF2] sprite not found: {path} — falling back to box.");
