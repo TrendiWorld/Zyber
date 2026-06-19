@@ -101,6 +101,14 @@ namespace LF2
             go.transform.localPosition = new Vector3(0, targetCanvasH * 0.5f + yOffset, 0);
         }
 
+        // Replace the box/sprite with a runtime-loaded 3D model (glTFast).
+        public void AttachModel3D(string file, float scaleMul, float yaw)
+        {
+            if (_rend) { Destroy(_rend.gameObject); _rend = null; }
+            MarkAnimated(); // Model3D owns facing (Y-rotation), not Sync's scale flip
+            gameObject.AddComponent<Model3D>().Configure(this, file, scaleMul, yaw);
+        }
+
         public void MarkAnimated() => _hasAnimator = true;
         public SpriteRenderer Renderer => _rend;
         public Color BaseColor => _baseColor;

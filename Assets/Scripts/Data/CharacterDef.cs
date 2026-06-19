@@ -33,6 +33,12 @@ namespace LF2
         public float SpriteYOffset = 0f;    // nudge sprite up/down (px)
         public int SpriteNativeFacing = 1;  // +1 if the art faces right, -1 if it faces left
 
+        // --- 3D model (optional, takes priority over sprite). GLB in
+        // StreamingAssets/, loaded at runtime via glTFast. ---
+        public string Model3DFile;          // e.g. "ninja_v2.glb"; null = use sprite/box
+        public float Model3DScale = 1f;     // multiplier on auto-fit height
+        public float Model3DYaw = 90f;      // base Y rotation so the model faces sideways
+
         public List<AbilityDef> Abilities = new List<AbilityDef>();
 
         public AbilityDef Ability(AbilitySlot slot)

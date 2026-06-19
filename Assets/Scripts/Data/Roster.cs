@@ -27,6 +27,7 @@ namespace LF2
                 MaxHp = 165, MaxEnergy = 120, Speed = 6.2f, Weight = 0.85f, Jump = 18,
                 HurtW = 56, HurtH = 118,
                 SpriteFile = "ninja_cutout.png", SpriteScale = 1f, SpriteYOffset = 0, SpriteNativeFacing = -1,
+                Model3DFile = "ninja_v2.glb", Model3DScale = 1f, Model3DYaw = 90f,
                 Blurb = "High-speed assassin mech. Twin energy katanas, in and out before you react.",
                 Abilities = new List<AbilityDef> {
                     new AbilityDef { Id="nj_slash", Name="Twin Slash", Slot=AbilitySlot.Attack, Type=AbilityType.Melee, Clip="attack",

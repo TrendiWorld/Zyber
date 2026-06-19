@@ -125,8 +125,27 @@ namespace LF2
             cam.orthographic = true;
             cam.orthographicSize = 360;
             cam.backgroundColor = new Color(0.07f, 0.08f, 0.12f);
-            cam.transform.position = new Vector3(0, 0, -10);
+            cam.transform.position = new Vector3(0, 0, -1000);   // far back so 3D depth is in front
+            cam.farClipPlane = 5000;
             cam.clearFlags = CameraClearFlags.SolidColor;
+
+            EnsureLight();
+        }
+
+        void EnsureLight()
+        {
+            if (FindFirstObjectByType<Light>() == null)
+            {
+                var lgo = new GameObject("Sun");
+                var l = lgo.AddComponent<Light>();
+                l.type = LightType.Directional;
+                l.intensity = 1.1f;
+                l.color = new Color(1f, 0.97f, 0.9f);
+                lgo.transform.rotation = Quaternion.Euler(50f, -35f, 0f);
+            }
+            // soft fill so unlit sides of the 3D model aren't pure black
+            RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
+            RenderSettings.ambientLight = new Color(0.45f, 0.47f, 0.55f);
         }
 
         void BuildArena()
@@ -151,7 +170,11 @@ namespace LF2
                    c.HurtW, c.HurtH, c.MaxHp, c.MaxEnergy, c.EnergyRegen, c.Speed, c.Jump, c.Weight);
             f.PosX = x; f.Facing = team == Team.Players ? 1 : -1;
 
-            if (!string.IsNullOrEmpty(c.SpriteFile))
+            if (!string.IsNullOrEmpty(c.Model3DFile))
+            {
+                f.AttachModel3D(c.Model3DFile, c.Model3DScale, c.Model3DYaw);
+            }
+            else if (!string.IsNullOrEmpty(c.SpriteFile))
             {
                 f.AttachSprite(c.SpriteFile, c.SpriteScale, c.SpriteYOffset, c.SpriteNativeFacing);
                 f.gameObject.AddComponent<ProcAnimator>();
@@ -168,7 +191,7 @@ namespace LF2
 
             var f1 = SpawnFighter(Team.Players, c1, -200);
             f1.gameObject.AddComponent<PlayerController>().Setup(f1, c1, new KeyMap {
-                Left = KeyCode.A, Right = KeyCode.D, Jump = KeyCode.W,
+                Left = KeyCode.A, Right = KeyCode.D, Jump = KeyCode.Space,
                 Attack = KeyCode.F, Ab1 = KeyCode.G, Ab2 = KeyCode.H });
 
             var f2 = SpawnFighter(Team.Players, c2, -80);
