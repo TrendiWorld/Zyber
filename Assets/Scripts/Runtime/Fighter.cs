@@ -43,6 +43,11 @@ namespace LF2
         public bool IsHurt => _flash > 0;
         public bool Grounded => PosY <= 0.001f;
 
+        // one-shot animation cue fired by an ability; ProcAnimator watches AnimCueId
+        public string AnimCue { get; private set; } = "";
+        public int AnimCueId { get; private set; }
+        public void TriggerAnim(string cue) { AnimCue = cue; AnimCueId++; }
+
         float _moveVx;                     // from input/AI this frame
         float _kbVx, _vy;                  // knockback + vertical velocity
         float _stun, _busy;                // frames locked out of acting

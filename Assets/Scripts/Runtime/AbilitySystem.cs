@@ -18,6 +18,7 @@ namespace LF2
 
             caster.StartCooldown(ab.Slot, ab.Cooldown);
             caster.Lock(14); // generic cast/swing lockout (frames)
+            caster.TriggerAnim(AnimCueFor(ab.Type)); // drive ProcAnimator
 
             var arena = caster.Arena;
             float ox = caster.PosX + caster.Facing * 30;     // muzzle/strike origin
@@ -35,6 +36,8 @@ namespace LF2
                         if (Mathf.Abs(dx) <= ab.Range + f.W * 0.5f)
                             f.TakeDamage(ab.Damage, ab.Knockback, caster.PosX, ab.Launch, ab.Stun);
                     }
+                    Fx.Slash(arena, caster.PosX + caster.Facing * 44, caster.PosY + caster.H * 0.55f,
+                             caster.Facing, ab.Range, Util.Hex(ab.Color));
                     break;
                 }
 
@@ -118,6 +121,20 @@ namespace LF2
         }
 
         static string caster_color(Fighter f) => "#4ad6ff";
+
+        // maps an ability type to a ProcAnimator motion style
+        static string AnimCueFor(AbilityType t)
+        {
+            switch (t)
+            {
+                case AbilityType.Melee: return "slash";
+                case AbilityType.Projectile:
+                case AbilityType.ProjectileArc: return "throw";
+                case AbilityType.Aoe: return "rush";
+                case AbilityType.Beam: return "beam";
+                default: return "cast";
+            }
+        }
 
         static void Spawn(Arena arena, Team team, float x, float y, float vx, float vy, float gravity,
                           float damage, float knockback, Color color, float life,

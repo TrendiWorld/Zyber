@@ -9,6 +9,10 @@ namespace LF2
 {
     public class EnemyController : MonoBehaviour
     {
+        // Global toggle: enemies still move/approach, but deal no damage while off.
+        // (Temporary — until their attack art/animations exist.)
+        public static bool EnemiesAttack = false;
+
         public Fighter Fighter;
         public EnemyDef Def;
         float _attackCd;
@@ -41,7 +45,7 @@ namespace LF2
                 else
                 {
                     Fighter.SetMove(0);
-                    if (_attackCd <= 0)
+                    if (EnemiesAttack && _attackCd <= 0)
                     {
                         _attackCd = 60;
                         foreach (var t in Fighter.Arena.Hostiles(Fighter.Team))
@@ -58,7 +62,7 @@ namespace LF2
                 else if (ad > 460) Fighter.SetMove(face * 0.3f);  // close in
                 else Fighter.SetMove(0);
 
-                if (_attackCd <= 0)
+                if (EnemiesAttack && _attackCd <= 0)
                 {
                     _attackCd = 75;
                     var go = new GameObject("EnemyShot");
