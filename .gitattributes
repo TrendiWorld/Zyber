@@ -1,0 +1,24 @@
+# Normalize line endings; treat Unity text assets as text so diffs/merges work.
+* text=auto
+
+*.cs        text diff=csharp
+*.shader    text
+*.json      text
+*.md        text
+
+# Unity YAML assets — text, and use Unity's smart merge tool if configured.
+*.unity     text merge=unityyamlmerge eol=lf
+*.prefab    text merge=unityyamlmerge eol=lf
+*.asset     text merge=unityyamlmerge eol=lf
+*.meta      text merge=unityyamlmerge eol=lf
+*.mat       text merge=unityyamlmerge eol=lf
+*.controller text merge=unityyamlmerge eol=lf
+
+# Binary assets (committed directly; switch to Git LFS if art grows large).
+*.png       binary
+*.jpg       binary
+*.psd       binary
+*.fbx       binary
+*.wav       binary
+*.mp3       binary
+*.ttf       binary
